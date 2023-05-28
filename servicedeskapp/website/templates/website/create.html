@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+    <link rel="stylesheet" href="{% static 'styles/inc-style.css' %}">
+{% endblock %}
+
+
+{% block body-content %}
+    <div class="body-content">
+        <h4>New ticket page</h4>
+
+
+
+        <form action="" class="YourFormClass" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Send</button>
+        </form>
+
+
+
+
+    </div>
+{% endblock %}

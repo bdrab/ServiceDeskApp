@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    font-family: Unbounded;
+
+}
+
+p{
+    display: inline;
+}
+
+.hide{
+    display: none;
+}
+
+.body-content{
+    margin: auto;
+    margin-top: 60px;
+    width: 575px;
+    text-align: center;
+}
+
+.navbar{
+    margin: 20px 15% 20px 15%;
+}
+
+.login-form, .register-form{
+    margin: 30% 0 0 0;
+    text-align: center;
+}
+
+
+

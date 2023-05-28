@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+    <script defer src="{% static 'js/create-message.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'styles/inc-style.css' %}">
+{% endblock %}
+
+
+{% block body-content %}
+<div class="body-content">
+    {% if user.is_authenticated %}
+        <div class="task-div">
+            <h6>Ticket number:  <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>
+            <h6>Assigned to:  <input disabled class="input-border" type="text"  value="{{ticket.assigned_to.first_name}} {{ticket.assigned_to.last_name}}"></h6>
+            <h6>Description: {{ticket.description}}</h6>
+        </div>
+
+
+
+        <div class="work-notes">
+
+            <div class="new-note">
+                <input type="text" class="input-border" id="note"  placeholder="Work note...">
+                <button type="button" id="send-note-btn">Send Note</button>
+            </div>
+
+            {% for message in messages %}
+                <div class="work-note">
+                    {{message.created}} Posted by: {{message.author}}<br>
+                    {{message.content}}
+                </div>
+            {% endfor %}
+
+
+        </div>
+
+
+    {% endif %}
+</div>
+{% endblock %}
