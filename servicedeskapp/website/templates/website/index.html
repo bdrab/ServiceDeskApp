@@ -7,31 +7,18 @@
 
 
 {% block body-content %}
+<div class="body-content">
 
-{% if not user.is_authenticated %}
-    <div class="login-modal">
-        <div class="login-form">
-            <form method="POST" action="">
-                {% csrf_token %}
-                <label for="username-field">Username:</label>
-                <input type="text" name="username" id="username-field" placeholder="Enter Username" autofocus/>
-                <br>
-                <label for="password-field">Password:</label>
-                <input type="password" name="password" id="password-field" placeholder="Enter Password"/>
-                <br>
-                <input type="submit" value="Login"/>
-            </form>
-            <div class="message-div">
-                {% for message in messages %}
-                    <h6>{{message}}</h6>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-{% endif %}
+     {% if not user.is_authenticated %}
 
+     <img src="{% static 'img/main_page_img.jpg' %}" class="img-index">
+     <br>
+     <form action="/login">
+          <input type="submit" value="Login" />
+     </form>
 
-
+     {% endif %}
+</div>
 
 
 {% endblock %}

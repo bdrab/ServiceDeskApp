@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+{% endblock %}
+
+
+{% block body-content %}
+
+<div class="body-content">
+
+  <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to your queue  :</h6>
+  <ul>
+    {% for ticket in queue_tickets %}
+      <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
+    {% endfor %}
+  </ul>
+
+    <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to you :</h6>
+
+  <ul>
+    {% for ticket in user_tickets %}
+      <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
+    {% endfor %}
+  </ul>
+
+
+</div>
+
+{% endblock %}

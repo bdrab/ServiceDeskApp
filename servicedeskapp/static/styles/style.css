@@ -23,10 +23,15 @@ p{
     margin: 20px 15% 20px 15%;
 }
 
-.login-form, .register-form{
-    margin: 30% 0 0 0;
-    text-align: center;
+.login-form{
+    margin-top: 200px;
 }
 
+.img-index{
+    margin-top: 100px;
+    width: 80%;
+}
 
-
+input{
+    text-align: center;
+}
