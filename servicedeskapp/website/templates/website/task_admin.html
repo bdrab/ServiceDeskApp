@@ -3,7 +3,7 @@
 
 
 {% block head-content %}
-    <script defer src="{% static 'js/create-message.js' %}" ></script>
+    <script defer src="{% static 'js/task-admin-js.js' %}" ></script>
     <link rel="stylesheet" href="{% static 'styles/inc-style.css' %}">
 {% endblock %}
 
@@ -12,20 +12,29 @@
 <div class="body-content">
     {% if user.is_authenticated %}
         <div class="task-div">
-            <h6>Ticket number:  <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>
-            <h6>Opened:  <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>
-            <h6>Opened by:  <input disabled class="input-border" type="text"  value="{{ticket.owner}}"></h6>
-            <h6>Assignment Group :  <input disabled class="input-border" type="text"  value="{{ticket.assignment_group.name}}"></h6>
-            <h6>Assigned to:  <input disabled class="input-border" type="text"  value="{{ticket.assigned_to.first_name}} {{ticket.assigned_to.last_name}}"></h6>
-            <h6>Description: {{ticket.description}}</h6>
+            <h6>Ticket number: <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>
+            <h6>Opened: <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>
+            <h6>Opened by: <input disabled class="input-border" type="text"  value="{{ticket.owner}}"></h6>
+            <h6>Assignment Group : <input disabled class="input-border" type="text"  value="{{ticket.assignment_group.name}}"></h6>
+            <h6>Assigned to: <input disabled class="input-border" type="text"  value="{{ticket.assigned_to.first_name}} {{ticket.assigned_to.last_name}}"></h6>
+            {% if ticket.state %}
+                <h6>State: <input disabled class="input-border" type="text"  value="Open"></h6>
+            {% else %}
+                <h6>State: <input disabled class="input-border" type="text"  value="Closed"></h6>
+            {% endif %}
+
             {% if ticket.assigned_to.first_name == None %}
                 <button type="button" id="start-work-btn">Start Work!</button>
             {% endif %}
 
+            {% if ticket.state %}
+                <button type="button" id="resolve-inc-btn">Resolve</button>
+            {% else %}
+                <button type="button" id="resolve-inc-btn">Reopen</button>
+            {% endif %}
+
+            <h6>Description: {{ticket.description}}</h6>
         </div>
-
-
-
         <div class="work-notes">
 
             <div class="new-note">
@@ -39,11 +48,7 @@
                     {{message.content}}
                 </div>
             {% endfor %}
-
-
         </div>
-
-
     {% endif %}
 </div>
 {% endblock %}

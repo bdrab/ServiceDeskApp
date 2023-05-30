@@ -33,6 +33,8 @@ class Incident(models.Model):
     number = models.IntegerField(default=time.time_ns())
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
     created = models.DateTimeField(auto_now_add=True)
+    closed = models.DateTimeField(null=True, blank=True)
+    state = models.BooleanField(default=True)
     description = models.TextField(blank=True)
 
 

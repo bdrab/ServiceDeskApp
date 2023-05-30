@@ -7,7 +7,6 @@
 
 
 {% block body-content %}
-
 <div class="body-content">
 
   <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to your queue  :</h6>
@@ -17,15 +16,18 @@
     {% endfor %}
   </ul>
 
-    <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to you :</h6>
-
+  <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to you :</h6>
   <ul>
-    {% for ticket in user_tickets %}
+    {% for ticket in user_assigned_to_tickets %}
       <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
     {% endfor %}
   </ul>
 
-
 </div>
+
+<!--<script type="text/javascript">-->
+<!--   var actuals = JSON.parse('{{ queue | safe }}')-->
+<!--   console.log(actuals)-->
+<!--</script>-->
 
 {% endblock %}
