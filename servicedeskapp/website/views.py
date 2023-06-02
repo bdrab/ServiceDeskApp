@@ -3,30 +3,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-from incident.models import Incident, Message, Group
+from incident.models import Incident, Message, Group, Attachment
 from website.forms import IncidentForm
 from django.core import serializers
+from django.db.models import Q
+from django.http import FileResponse
 
 
 def index(request):
-    context = {}
-    return render(request, "website/index.html", context=context)
-
-
-def create_incident(request):
-    form = IncidentForm()
-    if request.method == "POST":
-        form = IncidentForm(request.POST)
-        inc = form.save(commit=False)
-        inc.owner = request.user
-        group = Group.objects.all().filter(scope=inc.category).first()
-        inc.assignment_group = group
-        inc.save()
-    return render(request, "website/create.html", {'form': form})
-
-
-def account(request):
-    if request.user.is_authenticated:
+    if not request.user.is_authenticated:
+        context = {}
+        return render(request, "website/index.html", context=context)
+    else:
         user_tickets = Incident.objects.all().filter(owner=User.objects.get(username=request.user))
 
         if "admin" not in list(request.user.profile.roles.values()):
@@ -34,7 +22,8 @@ def account(request):
             return render(request, "website/account.html", context=context)
 
         else:
-            user_assigned_to_tickets = Incident.objects.all().filter(assigned_to=User.objects.get(username=request.user))
+            user_assigned_to_tickets = Incident.objects.all().filter(assigned_to=User.objects.get(username=request.user)).filter(~Q(state=False))
+            user_assigned_to_tickets_closed = Incident.objects.all().filter(assigned_to=User.objects.get(username=request.user)).filter(~Q(state=True))
 
             groups = Group.objects.all().filter(members=request.user)
             queue_tickets = Incident.objects.all().filter(assignment_group=groups[0]).filter(assigned_to=None)
@@ -46,8 +35,36 @@ def account(request):
 
             context = {"user_assigned_to_tickets": user_assigned_to_tickets,
                        "queue_tickets": queue_tickets,
+                       "queue_tickets_closed": user_assigned_to_tickets_closed,
                        "queue": queue}
             return render(request, "website/admin_panel.html", context=context)
+
+
+def add_attachment(request):
+    if request.user.is_authenticated:
+        incident_number = request.POST.get("incident")
+        inc = Incident.objects.get(number=incident_number)
+        for file in request.FILES.getlist("file"):
+            if file.size <= 4194304:
+                try:
+                    print(file.name)
+                    if "." in str(file.name):
+                        name, extension = str(file.name).split(".")
+                    else:
+                        name = file.name
+                        extension = ""
+
+                    if len(name) >= 10:
+                        name = name[:10]
+                    else:
+                        name = name
+
+                    attachment = Attachment(name=name, extension=extension, incident=inc, file=file)
+                    attachment.save()
+                except Exception as e:
+                    print(e)
+                    return HttpResponse("NOT OK")
+    return HttpResponse("ALL OK")
 
 
 def user_logout(request):
@@ -78,6 +95,18 @@ def user_login(request):
     return render(request, "website/login.html", context=context)
 
 
+def create_incident(request):
+    form = IncidentForm()
+    if request.method == "POST":
+        form = IncidentForm(request.POST)
+        inc = form.save(commit=False)
+        inc.owner = request.user
+        group = Group.objects.all().filter(scope=inc.category).first()
+        inc.assignment_group = group
+        inc.save()
+    return render(request, "website/create.html", {'form': form})
+
+
 def inc_details(request, inc_number):
     try:
         ticket = Incident.objects.get(number=inc_number)
@@ -86,9 +115,11 @@ def inc_details(request, inc_number):
         return redirect('index')
 
     inc_messages = Message.objects.all().filter(incident=ticket).order_by('-created')
+    attachments = Attachment.objects.all().filter(incident=ticket)
 
     context = {"ticket": ticket,
-               "messages": inc_messages}
+               "messages": inc_messages,
+               "attachments": attachments}
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
@@ -98,6 +129,11 @@ def inc_details(request, inc_number):
         return render(request, "website/task_admin.html", context=context)
     else:
         return render(request, "website/task_guest.html", context=context)
+
+
+def view_attachment(request, attachment_name):
+    file = Attachment.objects.get(file="files/inc_attachments/" + attachment_name)
+    return FileResponse(file.file.open(), as_attachment=True)
 
 
 def create_note(request):

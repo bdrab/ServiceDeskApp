@@ -35,8 +35,44 @@
 
             <h6>Description: {{ticket.description}}</h6>
         </div>
-        <div class="work-notes">
+        <div class="attachments-div">
+         <div><h3>Attachments</h3></div>
+            <br><br>
+            {% for attachment in attachments %}
+                <h6><a href="/{{attachment.file}}"> 📎 {{attachment.name}}.{{attachment.extension}}</a></h6>
+            {% endfor %}
 
+            <div class="photo-picker">
+                    <label for="file">
+                        <div id="drop_zone">
+                            <p class="drop-zone-text">Click here <br>or<br> drag one or more files to this <i>drop zone</i>.<br><br>max 4MB/image</p>
+<!--                            <div class="message-div upload-message-div">-->
+<!--                                {% for message in messages %}-->
+<!--                                    <h6>{{message}}</h6>-->
+<!--                                {% endfor %}-->
+<!--                            </div>-->
+                            <br><br>
+                            <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
+                        </div>
+                    </label><br>
+                    <input class="hide" type="file" id="file" name="photo" multiple />
+                    <p class="chosen-files"><ul class="chosen-files-list"></ul></p>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div class="work-notes">
             <div class="new-note">
                 <input type="text" class="input-border" id="note"  placeholder="Work note...">
                 <button type="button" id="send-note-btn">Send Note</button>

@@ -5,7 +5,7 @@
     border-radius: 40px;
 }
 
-.work-note{
+.work-note, .photo-picker{
     margin-top: 20px;
     border: 2px dotted #A0A0A3;
     border-radius: 40px;
@@ -19,4 +19,11 @@
    text-align: center;
 }
 
+
+.attachments-div{
+    margin-top: 20px;
+    padding: 20px 0px 20px 0px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+}
 

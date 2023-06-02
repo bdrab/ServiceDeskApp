@@ -1,7 +1,8 @@
 from django.db import models
-import uuid
 from django.contrib.auth.models import User
 import time
+import os
+from servicedeskapp import settings
 
 time.time()
 # Create your models here.
@@ -36,6 +37,18 @@ class Incident(models.Model):
     closed = models.DateTimeField(null=True, blank=True)
     state = models.BooleanField(default=True)
     description = models.TextField(blank=True)
+
+
+class Attachment(models.Model):
+    incident = models.ForeignKey(Incident, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=12, blank=True)
+    extension = models.CharField(max_length=12, blank=True)
+    file = models.FileField(upload_to="files/inc_attachments/")
+
+    def delete(self, *args, **kwargs):
+        os.remove(str(settings.BASE_DIR) + "\\" + self.original.name.replace("/", "\\"))
+        os.remove(str(settings.BASE_DIR) + "\\" + self.thumbnail.name.replace("/", "\\"))
+        super(Attachment, self).delete(*args, **kwargs)
 
 
 class Message(models.Model):

@@ -23,6 +23,17 @@
     {% endfor %}
   </ul>
 
+
+  <h6>Hi <strong>{{user}}</strong><br><br> Please find your closed tickets:</h6>
+  <ul>
+    {% for ticket in queue_tickets_closed %}
+      <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
+    {% endfor %}
+  </ul>
+
+
+
+
 </div>
 
 <!--<script type="text/javascript">-->
