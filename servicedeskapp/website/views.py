@@ -96,40 +96,43 @@ def user_login(request):
 
 
 def create_incident(request):
-    form = IncidentForm()
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        form = IncidentForm()
+        if request.method == "POST":
 
-        category = request.POST.get('category')
-        print(category)
-        category = Category.objects.get(pk=category)
-        description = request.POST.get('description')
-        group = Group.objects.all().filter(scope=category).first()
+            category = request.POST.get('category')
+            print(category)
+            category = Category.objects.get(pk=category)
+            description = request.POST.get('description')
+            group = Group.objects.all().filter(scope=category).first()
 
-        inc = Incident(owner=request.user, category=category, description=description, assignment_group=group)
-        inc.save()
-        for file in request.FILES.getlist("file"):
-            if file.size <= 4194304:
-                try:
-                    print(file.name)
-                    if "." in str(file.name):
-                        name, extension = str(file.name).split(".")
-                    else:
-                        name = file.name
-                        extension = ""
+            inc = Incident(owner=request.user, category=category, description=description, assignment_group=group)
+            inc.save()
+            for file in request.FILES.getlist("file"):
+                if file.size <= 4194304:
+                    try:
+                        print(file.name)
+                        if "." in str(file.name):
+                            name, extension = str(file.name).split(".")
+                        else:
+                            name = file.name
+                            extension = ""
 
-                    if len(name) >= 10:
-                        name = name[:10]
-                    else:
-                        name = name
+                        if len(name) >= 10:
+                            name = name[:10]
+                        else:
+                            name = name
 
-                    attachment = Attachment(name=name, extension=extension, incident=inc, file=file)
-                    attachment.save()
-                except Exception as e:
-                    print(e)
-                    return HttpResponse("NOT OK")
-        return HttpResponse("ALL OK")
+                        attachment = Attachment(name=name, extension=extension, incident=inc, file=file)
+                        attachment.save()
+                    except Exception as e:
+                        print(e)
+                        return HttpResponse("NOT OK")
+            return HttpResponse("ALL OK")
 
-    return render(request, "website/create.html", {'form': form})
+        return render(request, "website/create.html", {'form': form})
+    else:
+        return redirect("index")
 
 
 def inc_details(request, inc_number):
