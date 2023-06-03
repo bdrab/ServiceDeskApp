@@ -31,7 +31,7 @@ class Incident(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="engineer", default=None)
     assignment_group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True, related_name="group", default=None)
-    number = models.IntegerField(default=time.time_ns())
+    number = models.IntegerField(default=time.time_ns)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
     created = models.DateTimeField(auto_now_add=True)
     closed = models.DateTimeField(null=True, blank=True)

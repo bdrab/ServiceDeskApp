@@ -1,0 +1,39 @@
+#id_category{
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+.new-inc-div, .attachment-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+    padding-bottom: 20px;
+}
+
+.attachment-div{
+    margin-top: 0;
+    padding-bottom: 0;
+}
+
+
+textarea{
+    padding: 40px;
+    width: 500px;
+    border-radius: 40px;
+    border: 2px dotted #A0A0A3;
+}
+
+
+.attachments-div{
+    margin-top: 20px;
+    padding: 20px 0px 20px 0px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+}
+
+label{
+
+margin-top: 10px;
+}

@@ -3,24 +3,28 @@
 
 
 {% block head-content %}
-    <link rel="stylesheet" href="{% static 'styles/inc-style.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/create-inc.css' %}">
+    <script defer src="{% static 'js/create-incident.js' %}" ></script>
+
 {% endblock %}
 
 
 {% block body-content %}
     <div class="body-content">
-        <h4>New ticket page</h4>
-
-
-
-        <form action="" class="YourFormClass" method="post">
-            {% csrf_token %}
+        <div class="new-inc-div">
             {{ form.as_div }}
-            <button type="submit">Send</button>
-        </form>
 
-
-
-
+            <label for="id_attachment">Attachments:</label>
+            <div class="attachment-div" id="id_attachment">
+                <label for="file">
+                    <div id="drop_zone">
+                        <p class="drop-zone-text">Click here <br>or<br> drag one or more files to this <i>drop zone</i>.<br><br><h6>max 4MB/image</h6></p>
+                    </div>
+                </label><br>
+                <input class="hide" type="file" id="file" name="photo" multiple />
+                <p class="chosen-files"><ul class="chosen-files-list"></ul></p>
+            </div>
+            <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
+        </div>
     </div>
 {% endblock %}
