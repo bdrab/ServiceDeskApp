@@ -5,7 +5,7 @@
     border-radius: 40px;
 }
 
-.work-note, .photo-picker{
+.work-note, .attachment-picker{
     margin-top: 20px;
     border: 2px dotted #A0A0A3;
     border-radius: 40px;
@@ -27,3 +27,21 @@
     border-radius: 40px;
 }
 
+.knowledge-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0px 20px 0px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+}
+
+.tag{
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.submit-tag{
+    margin-top: 10px;
+}

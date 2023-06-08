@@ -40,38 +40,37 @@ dropDIV.addEventListener("dragover", event => {
 })
 
 
-
-
-
-
-
 submitBTN.addEventListener("click", async event => {
     let filesCounter = Array.from(fileField.files).length
-    if(filesCounter != 0){
-        let data = new FormData()
-        Array.from(fileField.files).forEach(element => {
-            data.append('file', element)
-        })
-        console.log(data);
-        data.append('category', categoryINC.value)
-        data.append('description', descriptionINC.value)
 
-        let response = await fetch('http://192.168.0.136/create', {
-                        method: "POST",
-                        headers: {'X-CSRFToken': csrftoken},
-                        body: data
-                        });
+    let data = new FormData()
+    Array.from(fileField.files).forEach(element => {
+        data.append('file', element)
+    })
+    data.append('category', categoryINC.value)
+    data.append('description', descriptionINC.value)
 
-        responseStatus = await response.status
-        console.log(responseStatus)
+    let response = await fetch('http://192.168.0.136/create', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrftoken},
+                    body: data
+                    });
+    data = await response.json()
+    responseStatus = response.status
 
-        if(responseStatus === 200){
-            chosenFilesList.textContent = "Uploaded successfully!";
-            fileField.files = (new DataTransfer()).files;
 
-        }else{
-            chosenFilesList.textContent = "Uploaded failed!";
-            fileField.files = (new DataTransfer()).files;
-        }
+
+    if(responseStatus === 200){
+        chosenFilesList.textContent = "Uploaded successfully!";
+        fileField.files = (new DataTransfer()).files;
+
+    }else{
+        chosenFilesList.textContent = "Uploaded failed!";
+        fileField.files = (new DataTransfer()).files;
     }
+
+    setTimeout(function(){
+    window.location.replace("/INC" + data.number);;
+    },1000);
+
 })

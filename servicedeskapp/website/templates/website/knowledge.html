@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+    <script defer src="{% static 'js/knowledge-js.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'styles/knowledge-inc.css' %}">
+{% endblock %}
+
+
+{% block body-content %}
+    <div class="body-content">
+        <div class="knowledge-div">
+            <label for="id_search_type">Type:</label><br>
+            <select name="category" required="" id="id_search_type">
+              <option value="" selected="">---------</option>
+              <option value="categories">Categories</option>
+              <option value="tags">Tags</option>
+            </select>
+
+            <div class="tags-div hide">
+                {% for tag in tags %}
+                    <span class="tag">{{tag.name}}</span>
+                {% endfor %}
+            </div>
+
+            <div class="categories-div hide">
+                {% for category in categories %}
+                    <span class="category">{{category.name}}</span>
+                {% endfor %}
+            </div>
+
+
+            <div class="knowledge-div">
+                <div class="incs-div">
+                </div>
+                <div class="files-div">
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

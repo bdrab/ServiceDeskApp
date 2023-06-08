@@ -1,6 +1,8 @@
 const sendBtn = document.querySelector("#send-note-btn")
 const startWorkBtn = document.querySelector("#start-work-btn")
 const resolveINCBtn = document.querySelector("#resolve-inc-btn")
+const addTagBtn = document.querySelector("#add-tag-btn")
+const addTagInput = document.querySelector("#add-tag-input")
 const incNumber = document.querySelector("#inc-number").value
 
 
@@ -107,7 +109,6 @@ if(submitBTN){
             Array.from(fileField.files).forEach(element => {
                 data.append('file', element)
             })
-            console.log(data);
             let response = await fetch('http://192.168.0.136/add-attachment', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrftoken},
@@ -115,7 +116,6 @@ if(submitBTN){
                             });
 
             responseStatus = await response.status
-            console.log(responseStatus)
 
             if(responseStatus === 200){
                 chosenFilesList.textContent = "Uploaded successfully!";
@@ -129,7 +129,31 @@ if(submitBTN){
     })
 }
 
+if(addTagBtn){
+    addTagBtn.addEventListener("click", async event => {
 
+            let data = new FormData()
+            data.append('inc-number', incNumber)
+            data.append('tag-name', addTagInput.value)
+            if(addTagInput.value === ""){
+                return
+            }
 
+            let response = await fetch('http://192.168.0.136/inc-api/create-tag', {
+                            method: "POST",
+                            headers: {'X-CSRFToken': csrftoken},
+                            body: data
+                            });
 
+            responseStatus = await response.status
 
+            if(responseStatus === 200){
+                addTagInput.value = "";
+
+            }else{
+                addTagInput.value = "";
+            }
+}
+)
+
+}

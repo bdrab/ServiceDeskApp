@@ -1,5 +1,5 @@
 from django.contrib import admin
-from incident.models import Incident, Message, Category, Group, Profile, Attachment
+from incident.models import Incident, Message, Category, Group, Profile, Attachment, Tag, KnowledgeFiles
 # Register your models here.
 
 admin.site.register(Incident)
@@ -8,3 +8,5 @@ admin.site.register(Category)
 admin.site.register(Group)
 admin.site.register(Profile)
 admin.site.register(Attachment)
+admin.site.register(Tag)
+admin.site.register(KnowledgeFiles)

@@ -1,9 +1,11 @@
+import json
+
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-from incident.models import Incident, Message, Group, Attachment, Category
+from incident.models import Incident, Message, Group, Attachment, Category, Tag, KnowledgeFiles
 from website.forms import IncidentForm
 from django.core import serializers
 from django.db.models import Q
@@ -27,11 +29,10 @@ def index(request):
 
             groups = Group.objects.all().filter(members=request.user)
             queue_tickets = Incident.objects.all().filter(assignment_group=groups[0]).filter(assigned_to=None)
-
             queue = serializers.serialize("json", queue_tickets)
 
             for group in groups[1:]:
-                queue_tickets |= Incident.objects.all().filter(assignment_group=group)
+                queue_tickets |= Incident.objects.all().filter(assignment_group=group).filter(assigned_to=None)
 
             context = {"user_assigned_to_tickets": user_assigned_to_tickets,
                        "queue_tickets": queue_tickets,
@@ -47,7 +48,6 @@ def add_attachment(request):
         for file in request.FILES.getlist("file"):
             if file.size <= 4194304:
                 try:
-                    print(file.name)
                     if "." in str(file.name):
                         name, extension = str(file.name).split(".")
                     else:
@@ -101,17 +101,18 @@ def create_incident(request):
         if request.method == "POST":
 
             category = request.POST.get('category')
-            print(category)
             category = Category.objects.get(pk=category)
             description = request.POST.get('description')
             group = Group.objects.all().filter(scope=category).first()
 
             inc = Incident(owner=request.user, category=category, description=description, assignment_group=group)
             inc.save()
+            response = json.dumps({"status": "ok",
+                                   "number": inc.number})
+
             for file in request.FILES.getlist("file"):
                 if file.size <= 4194304:
                     try:
-                        print(file.name)
                         if "." in str(file.name):
                             name, extension = str(file.name).split(".")
                         else:
@@ -127,8 +128,10 @@ def create_incident(request):
                         attachment.save()
                     except Exception as e:
                         print(e)
-                        return HttpResponse("NOT OK")
-            return HttpResponse("ALL OK")
+                        response = json.dumps({"status": "failed",
+                                               "number": "N/A"})
+                        return HttpResponse(response, content_type="application/json")
+            return HttpResponse(response, content_type="application/json")
 
         return render(request, "website/create.html", {'form': form})
     else:
@@ -144,8 +147,18 @@ def inc_details(request, inc_number):
 
     inc_messages = Message.objects.all().filter(incident=ticket).order_by('-created')
     attachments = Attachment.objects.all().filter(incident=ticket)
+    tags = ticket.tags.all()
+
+    files = []
+    if tags:
+        files = KnowledgeFiles.objects.all().filter(tag=tags[0])
+
+        for tag in tags[1:]:
+            files |= KnowledgeFiles.objects.all().filter(tag=tag)
 
     context = {"ticket": ticket,
+               "tags": tags,
+               "knowledge_files": files,
                "messages": inc_messages,
                "attachments": attachments}
     try:
@@ -161,6 +174,11 @@ def inc_details(request, inc_number):
 
 def view_attachment(request, attachment_name):
     file = Attachment.objects.get(file="files/inc_attachments/" + attachment_name)
+    return FileResponse(file.file.open(), as_attachment=True)
+
+
+def view_knowledge_file(request, knowledge_file_name):
+    file = KnowledgeFiles.objects.get(file="files/knowledge_files/" + knowledge_file_name)
     return FileResponse(file.file.open(), as_attachment=True)
 
 
@@ -212,3 +230,11 @@ def resolve_inc(request, inc_number):
         update_note(request, inc_number, state=incident.state)
         incident.save()
     return HttpResponse("Ticket successfully closed")
+
+
+def knowledge(request):
+    tags = Tag.objects.all()
+    categories = Category.objects.all()
+    context = {"tags": tags,
+               "categories": categories}
+    return render(request, "website/knowledge.html", context=context)
