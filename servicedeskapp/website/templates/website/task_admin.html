@@ -9,128 +9,143 @@
 
 
 {% block body-content %}
-<!-- different method to show inc detailss-->
-<!--<div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-lg">-->
-<!--              <h6>Ticket number: <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>-->
-<!--            </div>-->
-<!--            <div class="col-lg">-->
-<!--            {% if ticket.state %}-->
-<!--                <h6>State: <input disabled class="input-border" type="text"  value="Open"></h6>-->
-<!--            {% else %}-->
-<!--                <h6>State: <input disabled class="input-border" type="text"  value="Closed"></h6>-->
-<!--            {% endif %}-->
-<!--            </div>-->
-<!--        </div>-->
 
-<!--        <div class="row">-->
-<!--            <div class="col-lg">-->
-<!--                <h6>Opened: <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>-->
-<!--            </div>-->
-<!--            <div class="col-lg">-->
-<!--                <h6>Opened by: <input disabled class="input-border" type="text"  value="{{ticket.owner}}"></h6>-->
-<!--            </div>-->
-<!--        </div>-->
+<div class="modals">
+    <div class="knowledge-div hide">
 
-<!--        <div class="row">-->
-<!--            <div class="col-lg">-->
-<!--                <h6>Assigned to: <input disabled class="input-border" type="text"  value="{{ticket.assigned_to.first_name}} {{ticket.assigned_to.last_name}}"></h6>-->
-<!--            </div>-->
-<!--            <div class="col-lg">-->
-<!--                <h6>Assignment Group : <input disabled class="input-border" type="text"  value="{{ticket.assignment_group.name}}"></h6>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<div class="body-content">
+        <button type="button" id="close-knowledge-div-btn" class="btn btn-outline-secondary btn-submit">✕</button><br>
 
-    <div class="knowledge-div">
-        <div class="tags-div">
-            {% for tag in tags %}
-                <span class="tag">{{tag.name}}</span>
-            {% endfor %}
-            <br>
-            <div class="submit-tag">
-                <input class="input-border" id="add-tag-input" type="text"  value="" placeholder="Tag name">
-                <button type="button" id="add-tag-btn" class="btn btn-outline-secondary btn-submit">Add tag!</button>
-            </div>
-        </div>
-        <div class="knowledge-files">
-            {% for file in knowledge_files %}
-            <div class="knowledge-file">
-                <h6><a href="/{{file.file}}"> 📎 {{file.name}}.{{file.extension}}</a></h6>
-            </div>
+        <label for="knowledge-article-selected">Chosen articles for this INC:</label><br>
+        <div class="selected-knowledge-articles" id="knowledge-article-selected">
+<!--            TODO: add popup or different method to preview article-->
+<!--            TODO: add method to delete articles from incs-->
+            {% for article in inc_knowledge_articles %}
+                <h6>{{article}}</h6>
             {% endfor %}
         </div>
-        <div class="add-knowledge-file">
-
+        <label for="knowledge-article-select">Choose article for this INC:</label><br>
+        <select  required="" id="knowledge-article-select">
+          <option value="" disabled selected>Select Article</option>
+          <option value="add_new" >**ADD NEW**</option>
+            {% for article in knowledge_articles %}
+                <option value="{{article.pk}}">{{article.name}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <div class="add-new-knowledge-article hide">
+            <input class="input-border" id="knowledge-article-name" type="text"  value="" placeholder="Article Name">
+            <input type="file" id="files" name="file" multiple />
+            <textarea name="description" cols="40" rows="3" id="knowledge-note-description"></textarea><br>
         </div>
 
-
+        <button class="btn btn-outline-secondary" type="button" id="add-knowledge-article-btn">Save</button>
     </div>
-    {% if user.is_authenticated %}
-        <div class="task-div">
-            <h6>Ticket number: <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>
-            <h6>Opened: <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>
-            <h6>Opened by: <input disabled class="input-border" type="text"  value="{{ticket.owner}}"></h6>
-            <h6>Assignment Group : <input disabled class="input-border" type="text"  value="{{ticket.assignment_group.name}}"></h6>
-            <h6>Assigned to: <input disabled class="input-border" type="text"  value="{{ticket.assigned_to.first_name}} {{ticket.assigned_to.last_name}}"></h6>
-            {% if ticket.state %}
-                <h6>State: <input disabled class="input-border" type="text"  value="Open"></h6>
-            {% else %}
-                <h6>State: <input disabled class="input-border" type="text"  value="Closed"></h6>
-            {% endif %}
+</div>
 
-            {% if ticket.assigned_to.first_name == None %}
-                <button type="button" id="start-work-btn">Start Work!</button>
-            {% endif %}
+<div class="task-div">
 
-            {% if ticket.state %}
-                <button type="button" id="resolve-inc-btn">Resolve</button>
-            {% else %}
-                <button type="button" id="resolve-inc-btn">Reopen</button>
-            {% endif %}
-
-            <h6>Description: {{ticket.description}}</h6>
+    <div class="tags-div">
+        {% for tag in tags %}
+            <span class="tag">{{tag.name}}</span>
+        {% endfor %}
+        <br>
+        <div class="submit-tag">
+            <input class="input-border" id="add-tag-input" type="text"  value="" placeholder="Tag name">
+            <button type="button" id="add-tag-btn" class="btn btn-outline-secondary btn-submit">Add tag!</button>
         </div>
+    </div>
 
-        <div class="attachments-div">
-         <div><h3>Attachments</h3></div>
-            <br><br>
-            {% for attachment in attachments %}
-                <h6><a href="/{{attachment.file}}"> 📎 {{attachment.name}}.{{attachment.extension}}</a></h6>
-            {% endfor %}
-
-            <div class="attachment-picker">
-                    <label for="file">
-                        <div id="drop_zone">
-                            <p class="drop-zone-text">Click here <br>or<br> drag one or more files to this <i>drop zone</i>.<br><br>max 4MB/image</p>
-<!--                            <div class="message-div upload-message-div">-->
-<!--                                {% for message in messages %}-->
-<!--                                    <h6>{{message}}</h6>-->
-<!--                                {% endfor %}-->
-<!--                            </div>-->
-                            <br><br>
-                            <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
-                        </div>
-                    </label><br>
-                    <input class="hide" type="file" id="file" name="photo" multiple />
-                    <p class="chosen-files"><ul class="chosen-files-list"></ul></p>
-            </div>
-        </div>
-
-        <div class="work-notes">
-            <div class="new-note">
-                <input type="text" class="input-border" id="note"  placeholder="Work note...">
-                <button type="button" id="send-note-btn">Send Note</button>
-            </div>
-            {% for message in messages %}
-                <div class="work-note">
-                    {{message.created}} Posted by: {{message.author.first_name}} {{message.author.last_name}}<br>
-                    {{message.content}}
+    <div class="container">
+            <div class="row">
+                <div class="col-lg">
+                  <h6>Ticket number: <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>
                 </div>
-            {% endfor %}
+                <div class="col-lg">
+                {% if ticket.state %}
+                    <h6>State: <input disabled class="input-border" type="text"  value="Open"></h6>
+                {% else %}
+                    <h6>State: <input disabled class="input-border" type="text"  value="Closed"></h6>
+                {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg">
+                    <h6>Opened: <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>
+                </div>
+                <div class="col-lg">
+                    <h6>Opened by: <input disabled class="input-border" type="text"  value="{{ticket.owner}}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg">
+                    <h6>Assigned to: <input disabled class="input-border" type="text"  value="{{ticket.assigned_to.first_name}} {{ticket.assigned_to.last_name}}"></h6>
+                </div>
+                <div class="col-lg">
+                    <h6>Assignment Group : <input disabled class="input-border" type="text"  value="{{ticket.assignment_group.name}}"></h6>
+                </div>
+            </div>
         </div>
-    {% endif %}
+
+    <div class="body-content">
+
+        {% if user.is_authenticated %}
+            <div class="task-div">
+
+                {% if ticket.assigned_to.first_name == None %}
+                    <button  class="btn btn-outline-secondary" type="button" id="start-work-btn">Start Work!</button>
+                {% endif %}
+
+                {% if ticket.state %}
+                    <button  class="btn btn-outline-secondary" type="button" id="resolve-inc-btn">Resolve</button>
+                {% else %}
+                    <button  class="btn btn-outline-secondary" type="button" id="resolve-inc-btn">Reopen</button>
+                {% endif %}
+
+                    <button  class="btn btn-outline-secondary" type="button" id="knowledge-btn">Knowledge</button>
+                <h6>Description: {{ticket.description}}</h6>
+            </div>
+
+            <div class="attachments-div">
+             <div><h3>Attachments</h3></div>
+                <br><br>
+                {% for attachment in attachments %}
+                    <h6><a href="/{{attachment.file}}"> 📎 {{attachment.name}}.{{attachment.extension}}</a></h6>
+                {% endfor %}
+
+                <div class="attachment-picker">
+                        <label for="file">
+                            <div id="drop_zone">
+                                <p class="drop-zone-text">Click here <br>or<br> drag one or more files to this <i>drop zone</i>.<br><br>max 4MB/image</p>
+    <!--                            <div class="message-div upload-message-div">-->
+    <!--                                {% for message in messages %}-->
+    <!--                                    <h6>{{message}}</h6>-->
+    <!--                                {% endfor %}-->
+    <!--                            </div>-->
+                                <br><br>
+                                <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
+                            </div>
+                        </label><br>
+                        <input class="hide" type="file" id="file" name="photo" multiple />
+                        <p class="chosen-files"><ul class="chosen-files-list"></ul></p>
+                </div>
+            </div>
+
+            <div class="work-notes">
+                <div class="new-note">
+                    <input type="text" class="input-border" id="note"  placeholder="Work note...">
+                    <button class="btn btn-outline-secondary" type="button" id="send-note-btn">Send Note</button>
+                </div>
+                {% for message in messages %}
+                    <div class="work-note">
+                        {{message.created}} Posted by: {{message.author.first_name}} {{message.author.last_name}}<br>
+                        {{message.content}}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
 </div>
 {% endblock %}

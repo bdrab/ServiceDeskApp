@@ -37,6 +37,7 @@
 
 .tag{
     border: 2px dotted #A0A0A3;
+    border: 2px dotted #A0A0A3;
     border-radius: 40px;
     padding: 5px;
     cursor: pointer;
@@ -44,4 +45,33 @@
 
 .submit-tag{
     margin-top: 10px;
+}
+
+
+.knowledge-div {
+    position: absolute;
+    padding: 30px;
+    z-index: 9999;
+    background: white;
+    border-radius:26px;
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto;
+    text-align: center;
+}
+
+#close-knowledge-div-btn{
+   position: fixed;
+   top: 5px;
+   right: 5px;
+}
+
+
+.tags-div{
+    margin: auto;
+    width: 575px;
+    text-align: center;
+    margin-bottom: 40px;
 }

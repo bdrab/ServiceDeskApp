@@ -34,6 +34,25 @@ class Tag(models.Model):
         return self.name
 
 
+class KnowledgeFiles(models.Model):
+    name = models.CharField(max_length=12, blank=True)
+    extension = models.CharField(max_length=12, blank=True)
+    file = models.FileField(upload_to="files/knowledge_files/")
+
+    def delete(self, *args, **kwargs):
+        os.remove(str(settings.BASE_DIR) + "\\" + self.file.name.replace("/", "\\"))
+        super(KnowledgeFiles, self).delete(*args, **kwargs)
+
+
+class KnowledgeArticle(models.Model):
+    name = models.CharField(max_length=25, blank=True)
+    knowledge_files = models.ManyToManyField(KnowledgeFiles, default=None, blank=True)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Incident(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="engineer", default=None)
@@ -45,6 +64,8 @@ class Incident(models.Model):
     state = models.BooleanField(default=True)
     description = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag, default=None, blank=True)
+    knowledge = models.BooleanField(default=False, blank=False, null=False)
+    knowledge_article = models.ManyToManyField(KnowledgeArticle, default=None, blank=True)
 
     def __str__(self):
         return str(self.number)
@@ -59,18 +80,6 @@ class Attachment(models.Model):
     def delete(self, *args, **kwargs):
         os.remove(str(settings.BASE_DIR) + "\\" + self.file.name.replace("/", "\\"))
         super(Attachment, self).delete(*args, **kwargs)
-
-
-class KnowledgeFiles(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name="category")
-    name = models.CharField(max_length=12, blank=True)
-    extension = models.CharField(max_length=12, blank=True)
-    file = models.FileField(upload_to="files/knowledge_files/")
-
-    def delete(self, *args, **kwargs):
-        os.remove(str(settings.BASE_DIR) + "\\" + self.file.name.replace("/", "\\"))
-        super(KnowledgeFiles, self).delete(*args, **kwargs)
 
 
 class Message(models.Model):

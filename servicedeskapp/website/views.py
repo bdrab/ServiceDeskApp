@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-from incident.models import Incident, Message, Group, Attachment, Category, Tag, KnowledgeFiles
+from incident.models import Incident, Message, Group, Attachment, Category, Tag, KnowledgeFiles, KnowledgeArticle
 from website.forms import IncidentForm
 from django.core import serializers
 from django.db.models import Q
@@ -148,19 +148,15 @@ def inc_details(request, inc_number):
     inc_messages = Message.objects.all().filter(incident=ticket).order_by('-created')
     attachments = Attachment.objects.all().filter(incident=ticket)
     tags = ticket.tags.all()
-
-    files = []
-    if tags:
-        files = KnowledgeFiles.objects.all().filter(tag=tags[0])
-
-        for tag in tags[1:]:
-            files |= KnowledgeFiles.objects.all().filter(tag=tag)
-
+    articles = KnowledgeArticle.objects.all()
+    inc_articles = ticket.knowledge_article.all()
+    print(inc_articles)
     context = {"ticket": ticket,
                "tags": tags,
-               "knowledge_files": files,
                "messages": inc_messages,
-               "attachments": attachments}
+               "attachments": attachments,
+               "knowledge_articles": articles,
+               "inc_knowledge_articles": inc_articles}
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
@@ -226,10 +222,19 @@ def start_work(request, inc_number):
 def resolve_inc(request, inc_number):
     incident = Incident.objects.get(number=inc_number)
     if request.user.username == incident.assigned_to.username:
+        if incident.state:
+            if not incident.knowledge_article.all():
+                response = json.dumps({"status": "failed",
+                                       "details": "knowledge article not added"})
+                return HttpResponse(response, content_type="application/json")
+
         incident.state = not incident.state
         update_note(request, inc_number, state=incident.state)
         incident.save()
-    return HttpResponse("Ticket successfully closed")
+
+    response = json.dumps({"status": "ok",
+                           "details": "ok"})
+    return HttpResponse(response, content_type="application/json")
 
 
 def knowledge(request):

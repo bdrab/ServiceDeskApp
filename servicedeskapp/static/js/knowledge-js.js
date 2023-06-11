@@ -37,6 +37,11 @@ tagsDiv.addEventListener("click", async event => {
         filesDiv.innerHTML = ""
 
             if(tickets.length != 0){
+                let titleDiv = document.createElement("div");
+                titleDiv.setAttribute("class", "inc-title-div");
+                titleDiv.innerText = "INC numbers:";
+                incDiv.appendChild(titleDiv);
+
                 tickets.forEach(element => {
                     let newDIV = document.createElement("div");
                     newDIV.setAttribute("class", "inc-div");
@@ -49,6 +54,11 @@ tagsDiv.addEventListener("click", async event => {
             }
 
             if(files.length != 0){
+                let titleDiv = document.createElement("div");
+                titleDiv.setAttribute("class", "files-title-div");
+                titleDiv.innerText = "Related files:";
+                filesDiv.appendChild(titleDiv);
+
                 files.forEach(element => {
                     let newDIV = document.createElement("div");
                     newDIV.setAttribute("class", "file-div")
@@ -82,6 +92,10 @@ categoriesDiv.addEventListener("click", async event => {
         filesDiv.innerHTML = ""
 
             if(tickets.length != 0){
+                let titleDiv = document.createElement("div");
+                titleDiv.setAttribute("class", "inc-title-div");
+                titleDiv.innerText = "INC numbers:";
+                incDiv.appendChild(titleDiv);
                 tickets.forEach(element => {
                     let newDIV = document.createElement("div");
                     newDIV.setAttribute("class", "inc-div");
@@ -94,6 +108,10 @@ categoriesDiv.addEventListener("click", async event => {
             }
 
             if(files.length != 0){
+                let titleDiv = document.createElement("div");
+                titleDiv.setAttribute("class", "files-title-div");
+                titleDiv.innerText = "Related files:";
+                filesDiv.appendChild(titleDiv);
                 files.forEach(element => {
                     let newDIV = document.createElement("div");
                     newDIV.setAttribute("class", "file-div")
