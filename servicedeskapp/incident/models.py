@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import time
 import os
 from servicedeskapp import settings
-
+from notifier.models import Notification
 time.time()
 # Create your models here.
 
@@ -69,6 +69,11 @@ class Incident(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        new_notification = Notification(inc=self, has_been_sent=False)
+        new_notification.save()
 
 
 class Attachment(models.Model):

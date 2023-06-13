@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website.apps.WebsiteConfig',
     'incident.apps.IncidentConfig',
+    'notifier.apps.NotifierConfig',
 ]
 
 MIDDLEWARE = [
