@@ -6,5 +6,5 @@ class NotifierConfig(AppConfig):
     name = 'notifier'
 
     def ready(self):
-        from notifier.updater import start
+        from notifier.notifier import start
         start()
