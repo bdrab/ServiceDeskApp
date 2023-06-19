@@ -97,3 +97,4 @@ class Message(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     roles = models.JSONField(default=dict)
+    phone_number = models.CharField(max_length=12, default=None, blank=True, null=True)
