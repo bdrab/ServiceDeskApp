@@ -222,7 +222,24 @@ if(addKnowledgeBTN){
                 document.querySelector("#knowledge-note-description").value = ""
             }
         }else if(selectValue != ""){
-            console.log(selectValue)
+            let data = new FormData()
+            data.append('inc-number', incNumber)
+            data.append('article-number', selectValue)
+
+            let response = await fetch('http://192.168.0.136/inc-api/add-knowledge-article', {
+                            method: "POST",
+                            headers: {'X-CSRFToken': csrftoken},
+                            body: data
+                            });
+            response = await response
+            responseStatus = response.status
+            if(responseStatus == 200){
+                let articlesDiv = document.querySelector("#knowledge-article-selected");
+                const h6 = document.createElement("h6");
+                const textNode = document.createTextNode(knowledgeArticleSelect.selectedOptions[0].text);
+                h6.appendChild(textNode);
+                articlesDiv.appendChild(h6);
+            }
         }
     })
 }

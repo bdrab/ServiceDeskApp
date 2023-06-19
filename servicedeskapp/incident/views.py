@@ -229,3 +229,21 @@ def resolve_inc(request, inc_number):
     response = json.dumps({"status": "ok",
                            "details": "ok"})
     return HttpResponse(response, content_type="application/json")
+
+
+def add_knowledge_article(request):
+    response = json.dumps({"status": "ok",
+                           "details": "ok"})
+    try:
+        inc_number = request.POST.get('inc-number')
+        article_number = request.POST.get('article-number')
+        knowledge_article = KnowledgeArticle.objects.get(pk=article_number)
+
+        inc = Incident.objects.get(number=inc_number)
+        inc.knowledge_article.set([*inc.knowledge_article.all(), knowledge_article])
+        inc.save()
+    except (Incident.DoesNotExist, KnowledgeArticle.DoesNotExist):
+        response = json.dumps({"status": "failed",
+                               "details": "knowledge article not added"})
+
+    return HttpResponse(response, content_type="application/json")
