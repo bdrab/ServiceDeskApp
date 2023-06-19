@@ -71,9 +71,13 @@ class Incident(models.Model):
         return str(self.number)
 
     def save(self, *args, **kwargs):
+        inc_exist = Incident.objects.filter(pk=self.pk).exists()
+
         super().save(*args, **kwargs)
-        new_notification = Notification(inc=self, has_been_sent=False)
-        new_notification.save()
+
+        if not inc_exist:
+            new_notification = Notification(inc=self, has_been_sent=False)
+            new_notification.save()
 
 
 class Attachment(models.Model):

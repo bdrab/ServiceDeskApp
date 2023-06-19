@@ -11,12 +11,11 @@ const dropDIV = document.querySelector("#drop_zone")
 const fileField = document.querySelector("#file")
 const knowledgeFiles = document.querySelector("#files")
 const chosenFilesList = document.querySelector(".chosen-files-list")
-const submitBTN = document.querySelector(".btn-submit")
+const submitBTN = document.querySelector(".btn-submit-own")
 const addKnowledgeBTN = document.querySelector("#add-knowledge-article-btn")
 const knowledgeArticleSelect = document.querySelector("#knowledge-article-select")
 const knowledgeArticleSelectDiv = document.querySelector(".add-new-knowledge-article")
 const FILE_SIZE = 4194304
-
 
 
 if(sendBtn){
@@ -26,7 +25,7 @@ if(sendBtn){
         data.append('inc-number', incNumber)
         data.append('content', contentInput.value)
         contentInput.value = "";
-        let response = await fetch('http://192.168.0.136/create-note', {
+        let response = await fetch('http://192.168.0.136/inc-api/create-note', {
                         method: "POST",
                         headers: {'X-CSRFToken': csrftoken},
                         body: data
@@ -37,12 +36,11 @@ if(sendBtn){
             location.reload();
         }
     })
-
 }
 
 if (startWorkBtn){
     startWorkBtn.addEventListener("click", async (event) => {
-        let response = await fetch('http://192.168.0.136/start-work/' + incNumber, {
+        let response = await fetch('http://192.168.0.136/inc-api/start-work/' + incNumber, {
                         method: "GET",
                         headers: {'X-CSRFToken': csrftoken}
                         });
@@ -56,7 +54,7 @@ if (startWorkBtn){
 
 if(resolveINCBtn){
     resolveINCBtn.addEventListener("click", async (event) => {
-        let response = await fetch('http://192.168.0.136/resolve-inc/' + incNumber, {
+        let response = await fetch('http://192.168.0.136/inc-api/resolve-inc/' + incNumber, {
                         method: "GET",
                         headers: {'X-CSRFToken': csrftoken}
                         });
@@ -73,7 +71,6 @@ if(resolveINCBtn){
             console.log(data.details)
         }
     })
-
 }
 
 if(fileField){
@@ -119,7 +116,7 @@ if(submitBTN){
             Array.from(fileField.files).forEach(element => {
                 data.append('file', element)
             })
-            let response = await fetch('http://192.168.0.136/add-attachment', {
+            let response = await fetch('http://192.168.0.136/inc-api/add-attachment', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrftoken},
                             body: data
@@ -225,9 +222,7 @@ if(addKnowledgeBTN){
                 document.querySelector("#knowledge-note-description").value = ""
             }
         }else if(selectValue != ""){
-            console.log(event.target.value)
+            console.log(selectValue)
         }
-
-
     })
 }

@@ -1,6 +1,7 @@
 ### Python template
 # Byte-compiled / optimized / DLL files
 servicedeskapp/files/knowledge_files
+servicedeskapp/files/inc_attachments
 .idea
 __pycache__/
 *.py[cod]

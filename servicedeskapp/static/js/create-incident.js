@@ -50,7 +50,7 @@ submitBTN.addEventListener("click", async event => {
     data.append('category', categoryINC.value)
     data.append('description', descriptionINC.value)
 
-    let response = await fetch('http://192.168.0.136/create', {
+    let response = await fetch('http://192.168.0.136/inc-api/create', {
                     method: "POST",
                     headers: {'X-CSRFToken': csrftoken},
                     body: data
