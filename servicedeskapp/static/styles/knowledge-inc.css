@@ -14,7 +14,7 @@
     border-radius: 40px;
 }
 
-.tag, .category{
+.tag, .category, .article{
     border: 2px dotted #A0A0A3;
     border-radius: 40px;
     padding: 5px;
@@ -22,6 +22,39 @@
 }
 
 .knowledge-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0px 20px 0px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+}
+
+.selected{
+    color: #fff;
+    background-color: #4c5359;
+}
+
+
+.articles-name-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0px 20px 0px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+
+}
+.article-details{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0px 20px 0px;
+    border: 2px dotted #A0A0A3;
+    border-radius: 40px;
+}
+.article-name{}
+.article-description{}
+.article-files{}
+
+.control-div{
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 20px 0px 20px 0px;

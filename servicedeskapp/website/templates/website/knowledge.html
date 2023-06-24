@@ -10,31 +10,48 @@
 
 {% block body-content %}
     <div class="body-content">
-        <div class="knowledge-div">
-            <label for="id_search_type">Type:</label><br>
-            <select name="category" required="" id="id_search_type">
-              <option value="" selected="">---------</option>
-              <option value="categories">Categories</option>
-              <option value="tags">Tags</option>
-            </select>
-
-            <div class="tags-div hide">
-                {% for tag in tags %}
-                    <span class="tag">{{tag.name}}</span>
-                {% endfor %}
-            </div>
-
-            <div class="categories-div hide">
-                {% for category in categories %}
-                    <span class="category">{{category.name}}</span>
-                {% endfor %}
-            </div>
-
-
-            <div class="knowledge-div">
-                <div class="incs-div">
+        <div class="btn-control-div">
+            <button type="button" class="btn btn-outline-secondary selected" value="knowledge-btn">Knowledge Articles</button>
+            <button type="button" class="btn btn-outline-secondary" value="btn-search-tag-category">Search by tag/category</button>
+        </div>
+        <div class="control-div">
+            <div class="knowledge-articles-div">
+                <div class="articles-name-div">
+                    {% for article in articles %}
+                        <span class="article" data-pk="{{article.pk}}">{{article.name}}</span>
+                    {% endfor %}
                 </div>
-                <div class="files-div">
+                <div class="article-details hide">
+                    <div class="article-name"></div>
+                    <div class="article-description"></div>
+                    <div class="article-files"></div>
+                </div>
+
+            </div>
+            <div class="search-div hide">
+                <label for="id_search_type">Type:</label><br>
+                <select name="category" required="" id="id_search_type">
+                  <option value="" selected="">---------</option>
+                  <option value="categories">Categories</option>
+                  <option value="tags">Tags</option>
+                </select>
+
+                <div class="tags-div hide">
+                    {% for tag in tags %}
+                        <span class="tag">{{tag.name}}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="categories-div hide">
+                    {% for category in categories %}
+                        <span class="category">{{category.name}}</span>
+                    {% endfor %}
+                </div>
+                <div class="knowledge-div hide">
+                    <div class="incs-div">
+                    </div>
+                    <div class="files-div">
+                    </div>
                 </div>
             </div>
         </div>

@@ -68,6 +68,7 @@ if(resolveINCBtn){
             location.reload();
         }
         if(data.status == "failed"){
+            document.querySelector("#knowledge-btn").style.backgroundColor = "red";
             console.log(data.details)
         }
     })
@@ -232,6 +233,7 @@ if(addKnowledgeBTN){
                             body: data
                             });
             response = await response
+            console.log(response)
             responseStatus = response.status
             if(responseStatus == 200){
                 let articlesDiv = document.querySelector("#knowledge-article-selected");

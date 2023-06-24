@@ -20,7 +20,7 @@
 <!--            TODO: add popup or different method to preview article-->
 <!--            TODO: add method to delete articles from incs-->
             {% for article in inc_knowledge_articles %}
-                <h6>{{article}}</h6>
+                <span class="article-id-{{article.pk}}">{{article}}    ✖</span>
             {% endfor %}
         </div>
         <label for="knowledge-article-select">Choose article for this INC:</label><br>

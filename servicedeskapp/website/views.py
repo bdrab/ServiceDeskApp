@@ -119,6 +119,9 @@ def view_knowledge_file(request, knowledge_file_name):
 def knowledge(request):
     tags = Tag.objects.all()
     categories = Category.objects.all()
+    articles = [{"name": article.name,
+                 "pk": article.pk} for article in KnowledgeArticle.objects.all()]
     context = {"tags": tags,
-               "categories": categories}
+               "categories": categories,
+               "articles": articles}
     return render(request, "website/knowledge.html", context=context)

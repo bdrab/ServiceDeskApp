@@ -53,6 +53,18 @@ def categories(request, category):
     return HttpResponse(data, content_type="application/json")
 
 
+def knowledge_article(request, article):
+
+    article = KnowledgeArticle.objects.all().filter(pk=article).first()
+    article_to_dump = {"name": article.name,
+                       "description": article.description,
+                       "files": [file.file.url for file in article.knowledge_files.all()]}
+
+    data = json.dumps(article_to_dump)
+
+    return HttpResponse(data, content_type="application/json")
+
+
 def create_tag(request):
     if request.method != "POST":
         return redirect("index")
@@ -215,6 +227,11 @@ def start_work(request, inc_number):
 
 def resolve_inc(request, inc_number):
     incident = Incident.objects.get(number=inc_number)
+    if not incident.assigned_to:
+        response = json.dumps({"status": "failed",
+                               "details": "ticket not assigned"})
+        return HttpResponse(response, content_type="application/json")
+
     if request.user.username == incident.assigned_to.username:
         if incident.state:
             if not incident.knowledge_article.all():
@@ -240,6 +257,9 @@ def add_knowledge_article(request):
         knowledge_article = KnowledgeArticle.objects.get(pk=article_number)
 
         inc = Incident.objects.get(number=inc_number)
+        if knowledge_article in inc.knowledge_article.all():
+            return HttpResponse(response, status=406, content_type="application/json")
+
         inc.knowledge_article.set([*inc.knowledge_article.all(), knowledge_article])
         inc.save()
     except (Incident.DoesNotExist, KnowledgeArticle.DoesNotExist):
