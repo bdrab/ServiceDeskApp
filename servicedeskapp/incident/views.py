@@ -2,6 +2,7 @@ from django.shortcuts import HttpResponse, redirect
 from .models import Tag, User, Incident, KnowledgeFiles, Category, KnowledgeArticle, Attachment, Message, Group
 from website.forms import IncidentForm
 import json
+from django.utils import timezone
 
 
 def tags(request, tag):
@@ -240,6 +241,7 @@ def resolve_inc(request, inc_number):
                 return HttpResponse(response, content_type="application/json")
 
         incident.state = not incident.state
+        incident.closed = timezone.now()
         update_note(request, inc_number, state=incident.state)
         incident.save()
 

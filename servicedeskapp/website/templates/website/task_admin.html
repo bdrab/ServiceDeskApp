@@ -12,15 +12,14 @@
 
 <div class="modals">
     <div class="knowledge-div hide">
-
-        <button type="button" id="close-knowledge-div-btn" class="btn btn-outline-secondary btn-submit">✕</button><br>
-
+        <button type="button" class="btn btn-outline-secondary btn-submit close-knowledge-div-btn">✕</button><br>
         <label for="knowledge-article-selected">Chosen articles for this INC:</label><br>
         <div class="selected-knowledge-articles" id="knowledge-article-selected">
-<!--            TODO: add popup or different method to preview article-->
-<!--            TODO: add method to delete articles from incs-->
+<!--            TODO: add popup or different method to preview article add method to delete articles from incs -->
             {% for article in inc_knowledge_articles %}
-                <span class="article-id-{{article.pk}}">{{article}}    ✖</span>
+                <div class="article">
+                    <span class="article-id-{{article.pk}}">{{article}}    ✖</span>
+                </div>
             {% endfor %}
         </div>
         <label for="knowledge-article-select">Choose article for this INC:</label><br>
@@ -39,6 +38,14 @@
         </div>
 
         <button class="btn btn-outline-secondary" type="button" id="add-knowledge-article-btn">Save</button>
+    </div>
+    <div class="send-sms-div hide">
+        <button type="button" class="btn btn-outline-secondary btn-submit close-knowledge-div-btn">✕</button><br>
+        <label for="sms-number">Choose input telephone number:</label><br>
+        <input class="input-border" id="sms-number" type="text"  value="" placeholder="Number"><br>
+        <label for="sms-message">Choose input telephone number:</label><br>
+        <input class="input-border" id="sms-message" type="text"  value="" placeholder="Message"><br>
+        <button class="btn btn-outline-secondary" type="button" id="send-sms-submit-btn">Send SMS</button>
     </div>
 </div>
 
@@ -61,21 +68,36 @@
                   <h6>Ticket number: <input disabled class="input-border" type="text" id="inc-number" value="{{ticket.number}}"></h6>
                 </div>
                 <div class="col-lg">
-                {% if ticket.state %}
-                    <h6>State: <input disabled class="input-border" type="text"  value="Open"></h6>
-                {% else %}
-                    <h6>State: <input disabled class="input-border" type="text"  value="Closed"></h6>
-                {% endif %}
+                    <h6>Category: <input disabled class="input-border" type="text"  value="{{ticket.category}}"></h6>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg">
-                    <h6>Opened: <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>
-                </div>
-                <div class="col-lg">
                     <h6>Opened by: <input disabled class="input-border" type="text"  value="{{ticket.owner}}"></h6>
                 </div>
+                <div class="col-lg">
+                    <h6>Opened: <input disabled class="input-border" type="text"  value="{{ticket.created}}"></h6>
+                </div>
+
+            </div>
+
+            <div class="row">
+                    {% if ticket.state %}
+                         <div class="col-lg">
+                             <h6>State: <input disabled class="input-border" type="text"  value="Open"></h6>
+                        </div>
+                        <div class="col-lg">
+                            <h6>Closed: <input disabled class="input-border" type="text"  value="---"></h6>
+                        </div>
+                    {% else %}
+                        <div class="col-lg">
+                            <h6>State: <input disabled class="input-border" type="text"  value="Closed"></h6>
+                        </div>
+                        <div class="col-lg">
+                            <h6>Closed: <input disabled class="input-border" type="text"  value="{{ticket.closed}}"></h6>
+                        </div>
+                    {% endif %}
             </div>
 
             <div class="row">
@@ -104,6 +126,8 @@
                 {% endif %}
 
                     <button  class="btn btn-outline-secondary" type="button" id="knowledge-btn">Knowledge</button>
+
+                    <button  class="btn btn-outline-secondary" type="button" id="send-sms-btn">Send SMS notification</button>
                 <h6>Description: {{ticket.description}}</h6>
             </div>
 

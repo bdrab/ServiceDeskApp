@@ -1,6 +1,7 @@
 const sendBtn = document.querySelector("#send-note-btn")
 const knowledgeBtn = document.querySelector("#knowledge-btn")
-const closeKnowledgeDivBtn = document.querySelector("#close-knowledge-div-btn")
+const closeKnowledgeDivBtn = document.querySelector(".close-knowledge-div-btn")
+const modalsDIV = document.querySelector(".modals")
 const knowledgeDiv = document.querySelector(".knowledge-div")
 const startWorkBtn = document.querySelector("#start-work-btn")
 const resolveINCBtn = document.querySelector("#resolve-inc-btn")
@@ -15,6 +16,9 @@ const submitBTN = document.querySelector(".btn-submit-own")
 const addKnowledgeBTN = document.querySelector("#add-knowledge-article-btn")
 const knowledgeArticleSelect = document.querySelector("#knowledge-article-select")
 const knowledgeArticleSelectDiv = document.querySelector(".add-new-knowledge-article")
+const sendSMSBtn = document.querySelector("#send-sms-btn")
+const sendSMSDiv = document.querySelector(".send-sms-div")
+const sendSMSSubmitBtn = document.querySelector("#send-sms-submit-btn")
 const FILE_SIZE = 4194304
 
 
@@ -59,7 +63,7 @@ if(resolveINCBtn){
                         headers: {'X-CSRFToken': csrftoken}
                         });
 
-// TODO: add popup window to inform user that inc could not be closed because inc does not contains article.
+
         data = await response.json()
         responseStatus = response.status
         console.log(responseStatus)
@@ -161,16 +165,32 @@ if(addTagBtn){
     })
 }
 
+
+if(sendSMSBtn){
+    sendSMSBtn.addEventListener("click", event => {
+        sendSMSDiv.classList.remove("hide");
+        document.querySelector(".task-div").style.filter = "blur(8px)";
+    })
+}
+
+
 if(knowledgeBtn){
     knowledgeBtn.addEventListener("click", e => {
         knowledgeDiv.classList.remove("hide");
         document.querySelector(".task-div").style.filter = "blur(8px)";
     })
 }
-if(closeKnowledgeDivBtn){
-    closeKnowledgeDivBtn.addEventListener("click", e => {
-        knowledgeDiv.classList.add("hide");
+
+
+if(modalsDIV){
+    modalsDIV.addEventListener("click", event =>{
+        if([...event.target.classList].includes("close-knowledge-div-btn")){
+            let list = modalsDIV.children
+            for (let item of list) {
+                item.classList.add("hide")
+            }
         document.querySelector(".task-div").style.filter = "";
+        }
     })
 }
 
@@ -242,6 +262,28 @@ if(addKnowledgeBTN){
                 h6.appendChild(textNode);
                 articlesDiv.appendChild(h6);
             }
+        }
+    })
+}
+
+if(sendSMSSubmitBtn){
+    sendSMSSubmitBtn.addEventListener("click", async event=>{
+        console.log("sending")
+        let data = new FormData()
+        data.append('text', document.querySelector("#sms-message").value)
+        data.append('phones', document.querySelector("#sms-number").value)
+
+        let response = await fetch("http://192.168.0.130/sms", {
+                        method: "POST",
+                        body: data
+                        });
+        response = await response
+        console.log(response)
+        responseStatus = response.status
+        if(responseStatus == 200){
+            console.log("sms has been sent")
+        }else{
+            console.log("sms has not been sent")
         }
     })
 }
