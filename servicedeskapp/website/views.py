@@ -17,7 +17,8 @@ def index(request):
         context = {}
         return render(request, "website/index.html", context=context)
     else:
-        user_tickets = Incident.objects.all().filter(owner=User.objects.get(username=request.user))
+        tickets = Incident.objects.all()
+        user_tickets = tickets.filter(owner=User.objects.get(username=request.user))
 
         if "admin" not in list(request.user.profile.roles.values()):
             context = {"tickets": user_tickets}
@@ -28,16 +29,20 @@ def index(request):
             user_assigned_to_tickets_closed = Incident.objects.all().filter(assigned_to=User.objects.get(username=request.user)).filter(~Q(state=True))
 
             groups = Group.objects.all().filter(members=request.user)
-            queue_tickets = Incident.objects.all().filter(assignment_group=groups[0]).filter(assigned_to=None)
-            queue = serializers.serialize("json", queue_tickets)
+            queue_tickets_not_assigned = Incident.objects.all().filter(assignment_group=groups[0]).filter(assigned_to=None)
+            queue_tickets_assigned = Incident.objects.all().filter(assignment_group=groups[0]).filter(assigned_to=not None)
+            queue = serializers.serialize("json", queue_tickets_not_assigned)
 
             for group in groups[1:]:
-                queue_tickets |= Incident.objects.all().filter(assignment_group=group).filter(assigned_to=None)
+                queue_tickets_not_assigned |= Incident.objects.all().filter(assignment_group=group).filter(assigned_to=None)
+                queue_tickets_assigned |= Incident.objects.all().filter(assignment_group=group).filter(assigned_to=not None)
 
             context = {"user_assigned_to_tickets": user_assigned_to_tickets,
-                       "queue_tickets": queue_tickets,
+                       "queue_tickets": queue_tickets_not_assigned,
+                       "queue_tickets_assigned": queue_tickets_assigned,
                        "queue_tickets_closed": user_assigned_to_tickets_closed,
-                       "queue": queue}
+                       "queue": queue,
+                       "tickets": tickets}
             return render(request, "website/admin_panel.html", context=context)
 
 

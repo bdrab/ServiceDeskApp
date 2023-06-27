@@ -268,7 +268,6 @@ if(addKnowledgeBTN){
 
 if(sendSMSSubmitBtn){
     sendSMSSubmitBtn.addEventListener("click", async event=>{
-        console.log("sending")
         let data = new FormData()
         data.append('text', document.querySelector("#sms-message").value)
         data.append('phones', document.querySelector("#sms-number").value)

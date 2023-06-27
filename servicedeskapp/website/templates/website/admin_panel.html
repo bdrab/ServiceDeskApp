@@ -3,42 +3,161 @@
 
 
 {% block head-content %}
+    <script defer src="{% static 'js/admin-panel.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'styles/admin_panel.css' %}">
 {% endblock %}
 
 
 {% block body-content %}
 <div class="body-content">
+  <div class="control-btn-div">
+    <button type="button" class="btn btn-outline-secondary selected" value="your-work-btn">Your work</button>
+    <button type="button" class="btn btn-outline-secondary" value="your-group-work-btn">Your group work</button>
+    <button type="button" class="btn btn-outline-secondary" value="all-inc-btn">All Incidents</button>
+    <button type="button" class="btn btn-outline-secondary" value="closed-inc-btn">Closed Incidents</button>
+  </div>
+  <div class="tables">
+    <div class="your-work-div">
+      <div class="task-div">
+        <h6>Please find tickets assigned to your queue  :</h6>
+        {% if not queue_tickets %}
+          <h6>-----no tickets-----</h6>
+        {% else %}
+        <table class="table table-bordered font-size new-task-table">
+          <thead>
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in queue_tickets %}
+              <tr>
+                <td class="inc-number"><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></td>
+                <td>{{ticket.created}}</td>
+                <td>{{ticket.category}}</td>
+                <td>{{ticket.description}}</td>
+                <td><button  class="btn btn-outline-secondary start-work-btn" type="button" data-id="{{ticket.number}}">Start Work!</button></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
 
-  <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to your queue  :</h6>
-  <ul>
-    {% for ticket in queue_tickets %}
-      <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
-    {% endfor %}
-  </ul>
+      <div class="task-div">
+        <h6>Please find tickets assigned to you :</h6>
+        <table class="table table-bordered font-size">
+          <thead>
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in user_assigned_to_tickets %}
+              <tr>
+                <td><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></td>
+                <td>{{ticket.created}}</td>
+                <td>{{ticket.category}}</td>
+                <td>{{ticket.description}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  <h6>Hi <strong>{{user}}</strong><br><br> Please find tickets assigned to you :</h6>
-  <ul>
-    {% for ticket in user_assigned_to_tickets %}
-      <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
-    {% endfor %}
-  </ul>
+    <div class="your-group-work-div hide">
+      <div class="task-div">
+        <table class="table table-bordered font-size new-task-table">
+          <thead>
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in queue_tickets_assigned %}
+              <tr>
+                <td class="inc-number"><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></td>
+                <td>{{ticket.created}}</td>
+                <td>{{ticket.category}}</td>
+                <td>{{ticket.description}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="all-inc-div hide">
+      <div class="task-div">
+        <h6>All tickets: </h6>
+        <table class="table table-bordered font-size new-task-table">
+          <thead>
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in tickets %}
+              <tr>
+                <td class="inc-number"><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></td>
+                <td>{{ticket.created}}</td>
+                <td>{{ticket.category}}</td>
+                <td>{{ticket.description}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
 
-  <h6>Hi <strong>{{user}}</strong><br><br> Please find your closed tickets:</h6>
-  <ul>
-    {% for ticket in queue_tickets_closed %}
-      <li><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></li>
-    {% endfor %}
-  </ul>
+    </div>
+    <div class="closed-inc-div hide">
+      <div class="task-div">
+        <h6>Please find your closed tickets:</h6>
+        <table class="table table-bordered font-size">
+          <thead>
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in queue_tickets_closed %}
+              <tr>
+                <td><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></td>
+                <td>{{ticket.created}}</td>
+                <td>{{ticket.category}}</td>
+                <td>{{ticket.description}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-
-
-
+    </div>
+  </div>
 </div>
+{% endblock %}
 
 <!--<script type="text/javascript">-->
 <!--   var actuals = JSON.parse('{{ queue | safe }}')-->
 <!--   console.log(actuals)-->
 <!--</script>-->
 
-{% endblock %}
+

@@ -1,0 +1,22 @@
+.task-div{
+    margin-top: 50px;
+}
+
+.body-content{
+    width: 100vw;
+}
+
+.font-size{
+    font-size: 14px;
+}
+
+.table{
+    text-align: center;
+    margin: auto;
+    width: 50vw;
+}
+
+.selected{
+    color: #fff;
+    background-color: #4c5359;
+}
