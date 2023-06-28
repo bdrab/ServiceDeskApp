@@ -19,6 +19,7 @@
     border-radius: 40px;
     padding: 5px;
     cursor: pointer;
+    margin-top: 5px;
 }
 
 .knowledge-div{
@@ -50,8 +51,13 @@
     border: 2px dotted #A0A0A3;
     border-radius: 40px;
 }
-.article-name{}
-.article-description{}
+.article-name{
+    font-weight: bold;
+}
+.article-description{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 .article-files{}
 
 .control-div{
@@ -60,4 +66,8 @@
     padding: 20px 0px 20px 0px;
     border: 2px dotted #A0A0A3;
     border-radius: 40px;
+}
+
+#id_search_type{
+    text-align: center;
 }

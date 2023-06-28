@@ -39,3 +39,7 @@ input{
     width: 1000px;
     text-align: center;
 }
+
+.body-content a{
+    color: rgba(0, 0, 0, 0.55);
+}

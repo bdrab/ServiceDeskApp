@@ -27,6 +27,10 @@ selectInput.addEventListener("change", event => {
 tagsDiv.addEventListener("click", async event => {
     if([...event.target.classList].includes("tag")){
         document.querySelector(".knowledge-div").classList.remove("hide")
+
+        removeClass(event.target.parentElement, "selected")
+        event.target.classList.add("selected")
+
         let response = await fetch('http://192.168.0.136/inc-api/tags/' + event.target.innerText, {
                     headers: {'X-CSRFToken': csrftoken},
                     });
@@ -82,6 +86,10 @@ tagsDiv.addEventListener("click", async event => {
 categoriesDiv.addEventListener("click", async event => {
     if([...event.target.classList].includes("category")){
         document.querySelector(".knowledge-div").classList.remove("hide")
+
+        removeClass(event.target.parentElement, "selected")
+        event.target.classList.add("selected")
+
         let response = await fetch('http://192.168.0.136/inc-api/categories/' + event.target.innerText, {
                     headers: {'X-CSRFToken': csrftoken},
                     });
@@ -152,6 +160,10 @@ btnControlDiv.addEventListener("click", async event => {
 articlesNameDiv.addEventListener("click", async event => {
     if([...event.target.classList].includes("article")){
         document.querySelector(".article-details").classList.remove("hide")
+
+        removeClass(event.target.parentElement, "selected")
+        event.target.classList.add("selected")
+
         let articleID = event.target.dataset["pk"]
         let response = await fetch('http://192.168.0.136/inc-api/knowledge_article/' + articleID, {
                     headers: {'X-CSRFToken': csrftoken},
@@ -171,7 +183,7 @@ articlesNameDiv.addEventListener("click", async event => {
 
                 let aElement = document.createElement("a");
                 aElement.setAttribute("href", file)
-                aElement.innerText = "File " + counter
+                aElement.innerText = " 📎  File " + counter
                 counter ++;
 
                 newDIV.appendChild(aElement);

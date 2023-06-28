@@ -14,3 +14,16 @@ function getCookie(name) {
 }
 
 const csrftoken = getCookie('csrftoken');
+
+
+function removeClass(element, className){
+    for(let item of element.children){
+        item.classList.remove(className);
+    }
+}
+
+function addClass(element, className){
+    for(let item of element.children){
+        item.classList.add(className);
+    }
+}

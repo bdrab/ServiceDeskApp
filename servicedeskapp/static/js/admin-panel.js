@@ -56,14 +56,3 @@ btnControlDiv.addEventListener("click", async event => {
     }
 })
 
-function removeClass(element, className){
-    for(let item of element.children){
-        item.classList.remove(className);
-    }
-}
-
-function addClass(element, className){
-    for(let item of element.children){
-        item.classList.add(className);
-    }
-}
