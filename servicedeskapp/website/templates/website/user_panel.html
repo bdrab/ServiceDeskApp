@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+    <script defer src="{% static 'js/user-panel.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'styles/user_panel.css' %}">
+{% endblock %}
+
+
+{% block body-content %}
+<div class="body-content">
+
+  <div class="tables">
+    <div class="your-work-div">
+      <div class="task-div">
+        {% if not tickets %}
+          <h6>-----no tickets-----</h6>
+        {% else %}
+        <table class="table table-bordered font-size new-task-table">
+          <thead>
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in tickets %}
+              <tr>
+                <td class="inc-number"><a href="/INC{{ticket.number}}">INC{{ticket.number}}</a></td>
+                <td>{{ticket.created}}</td>
+                <td>{{ticket.category}}</td>
+                <td>{{ticket.description}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

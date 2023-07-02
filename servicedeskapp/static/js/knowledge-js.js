@@ -31,7 +31,7 @@ tagsDiv.addEventListener("click", async event => {
         removeClass(event.target.parentElement, "selected")
         event.target.classList.add("selected")
 
-        let response = await fetch('http://192.168.0.136/inc-api/tags/' + event.target.innerText, {
+        let response = await fetch('http://127.0.0.1:8000/inc-api/tags/' + event.target.innerText, {
                     headers: {'X-CSRFToken': csrftoken},
                     });
 
@@ -90,7 +90,7 @@ categoriesDiv.addEventListener("click", async event => {
         removeClass(event.target.parentElement, "selected")
         event.target.classList.add("selected")
 
-        let response = await fetch('http://192.168.0.136/inc-api/categories/' + event.target.innerText, {
+        let response = await fetch('http://127.0.0.1:8000/inc-api/categories/' + event.target.innerText, {
                     headers: {'X-CSRFToken': csrftoken},
                     });
 
@@ -165,7 +165,7 @@ articlesNameDiv.addEventListener("click", async event => {
         event.target.classList.add("selected")
 
         let articleID = event.target.dataset["pk"]
-        let response = await fetch('http://192.168.0.136/inc-api/knowledge_article/' + articleID, {
+        let response = await fetch('http://127.0.0.1:8000/inc-api/knowledge_article/' + articleID, {
                     headers: {'X-CSRFToken': csrftoken},
                     });
         data = await response.json()

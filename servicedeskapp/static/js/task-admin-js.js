@@ -1,6 +1,5 @@
 const sendBtn = document.querySelector("#send-note-btn")
 const knowledgeBtn = document.querySelector("#knowledge-btn")
-const closeKnowledgeDivBtn = document.querySelector(".close-knowledge-div-btn")
 const modalsDIV = document.querySelector(".modals")
 const knowledgeDiv = document.querySelector(".knowledge-div")
 const startWorkBtn = document.querySelector("#start-work-btn")
@@ -29,7 +28,7 @@ if(sendBtn){
         data.append('inc-number', incNumber)
         data.append('content', contentInput.value)
         contentInput.value = "";
-        let response = await fetch('http://192.168.0.136/inc-api/create-note', {
+        let response = await fetch('http://127.0.0.1:8000/inc-api/create-note', {
                         method: "POST",
                         headers: {'X-CSRFToken': csrftoken},
                         body: data
@@ -44,7 +43,7 @@ if(sendBtn){
 
 if (startWorkBtn){
     startWorkBtn.addEventListener("click", async (event) => {
-        let response = await fetch('http://192.168.0.136/inc-api/start-work/' + incNumber, {
+        let response = await fetch('http://127.0.0.1:8000/inc-api/start-work/' + incNumber, {
                         method: "GET",
                         headers: {'X-CSRFToken': csrftoken}
                         });
@@ -58,7 +57,7 @@ if (startWorkBtn){
 
 if(resolveINCBtn){
     resolveINCBtn.addEventListener("click", async (event) => {
-        let response = await fetch('http://192.168.0.136/inc-api/resolve-inc/' + incNumber, {
+        let response = await fetch('http://127.0.0.1:8000/inc-api/resolve-inc/' + incNumber, {
                         method: "GET",
                         headers: {'X-CSRFToken': csrftoken}
                         });
@@ -121,7 +120,7 @@ if(submitBTN){
             Array.from(fileField.files).forEach(element => {
                 data.append('file', element)
             })
-            let response = await fetch('http://192.168.0.136/inc-api/add-attachment', {
+            let response = await fetch('http://127.0.0.1:8000/inc-api/add-attachment', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrftoken},
                             body: data
@@ -149,7 +148,7 @@ if(addTagBtn){
             if(addTagInput.value === ""){
                 return
             }
-            let response = await fetch('http://192.168.0.136/inc-api/create-tag', {
+            let response = await fetch('http://127.0.0.1:8000/inc-api/create-tag', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrftoken},
                             body: data
@@ -184,7 +183,7 @@ if(knowledgeBtn){
 
 if(modalsDIV){
     modalsDIV.addEventListener("click", event =>{
-        if([...event.target.classList].includes("close-knowledge-div-btn")){
+        if([...event.target.classList].includes("close-modal-div-btn")){
             let list = modalsDIV.children
             for (let item of list) {
                 item.classList.add("hide")
@@ -225,7 +224,7 @@ if(addKnowledgeBTN){
                 })}
 
 
-            let response = await fetch('http://192.168.0.136/inc-api/create-knowledge-article', {
+            let response = await fetch('http://127.0.0.1:8000/inc-api/create-knowledge-article', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrftoken},
                             body: data
@@ -247,7 +246,7 @@ if(addKnowledgeBTN){
             data.append('inc-number', incNumber)
             data.append('article-number', selectValue)
 
-            let response = await fetch('http://192.168.0.136/inc-api/add-knowledge-article', {
+            let response = await fetch('http://127.0.0.1:8000/inc-api/add-knowledge-article', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrftoken},
                             body: data

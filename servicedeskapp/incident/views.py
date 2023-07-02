@@ -16,6 +16,7 @@ def tags(request, tag):
     for article in articles:
         files |= article.knowledge_files.all()
 
+
     incs = [{"number": inc.number,
              "description": inc.description} for inc in incs]
 
@@ -228,6 +229,20 @@ def start_work(request, inc_number):
 
 def resolve_inc(request, inc_number):
     incident = Incident.objects.get(number=inc_number)
+
+    print(request.user)
+    print(incident.owner.username)
+    print(request.user.username == incident.owner.username)
+    if request.user.username == incident.owner.username:
+
+        incident.state = False
+        incident.closed = timezone.now()
+        update_note(request, inc_number, state=incident.state)
+        incident.save()
+        response = json.dumps({"status": "ok",
+                               "details": "ok"})
+        return HttpResponse(response, content_type="application/json")
+
     if not incident.assigned_to:
         response = json.dumps({"status": "failed",
                                "details": "ticket not assigned"})

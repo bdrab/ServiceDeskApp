@@ -10,9 +10,11 @@
             <li class="nav-item">
               <a class="nav-link" href="/create">New Incident</a>
             </li>
+            {% if user.profile.roles.1 == "admin" %}
             <li class="nav-item">
               <a class="nav-link" href="/knowledge">Knowledge Base</a>
             </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
             </li>

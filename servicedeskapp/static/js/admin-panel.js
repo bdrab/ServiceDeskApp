@@ -14,7 +14,7 @@ if(newTaskTable){
     newTaskTable.addEventListener("click", async event => {
         if([...event.target.classList].includes("start-work-btn")){
             let incNumber = event.target.dataset["id"]
-            let response = await fetch('http://192.168.0.136/inc-api/start-work/' + incNumber, {
+            let response = await fetch('http://127.0.0.1:8000/inc-api/start-work/' + incNumber, {
                            method: "GET",
                            headers: {'X-CSRFToken': csrftoken}
                            });
