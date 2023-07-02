@@ -32,3 +32,6 @@ Below some screenshots from app:
 ![admin-inc-new-knowledge](https://github.com/bdrab/ServiceDeskApp/assets/97404833/84deb05b-1e08-4988-871b-bf5e9bb61ad4)
 
 
+IoT device: 
+
+![357316252_781518137004577_6042032337494715801_n](https://github.com/bdrab/ServiceDeskApp/assets/97404833/385e7b8a-b453-480e-bf6d-a6f371fd3335)
